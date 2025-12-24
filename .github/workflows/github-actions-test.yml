@@ -1,1 +1,18 @@
-name: Github Actions Test 
+name: Github Actions Test
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    test-github-actions:
+        name: Verify github actions task
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Read file
+              uses: cat hello.txt
