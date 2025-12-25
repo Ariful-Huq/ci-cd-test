@@ -16,17 +16,12 @@ jobs:
             
             - name: Setup NGINX service
               uses: nyurik/action-setup-nginx@v1
-              with:
-                # You can provide a custom configuration file as text or use the default
-                conf-file-text: |
-                  events { worker_connections 1024; }
-                  http {
-                    server {
-                      listen ${{ job.outputs.port }};
-                      root ${{ job.outputs.html-dir }};
-                    }
-                  }
-            - name: Check NGINX status (example test)
-              run: |
-                # NGINX is now running on the runner, you can perform tests against it
-                curl http://localhost:${{ steps.setup-nginx-service.outputs.port }}
+              id: nginx
+            - run: |
+                echo "Hello, world!" > "${{ steps.nginx.outputs.html-dir }}/index.html"
+      
+                curl http://localhost:${{ steps.nginx.outputs.port }}/
+                # Expected output: Hello, world!
+
+                cat "${{ steps.nginx.outputs.access-log }}"
+                # Expected to contain a line with   GET /   HTTP/1.1   200
