@@ -18,7 +18,7 @@ jobs:
               uses: nyurik/action-setup-nginx@v1
               id: nginx
             - run: |
-                # echo "Hello, world!" > "${{ steps.nginx.outputs.html-dir }}/index.html"
+                 echo "Hello, world!" > "${{ steps.nginx.outputs.html-dir }}/index.html"
       
                 curl http://localhost:${{ steps.nginx.outputs.port }}/
                 # Expected output: Hello, world!
