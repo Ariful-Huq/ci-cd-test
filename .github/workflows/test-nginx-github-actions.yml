@@ -1,0 +1,32 @@
+name: Test NGINX Configuration
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    test-nginx-configuration:
+        name: View NGINX
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+            
+            - name: Setup NGINX service
+              uses: nyurik/action-setup-nginx@v1
+              with:
+                # You can provide a custom configuration file as text or use the default
+                conf-file-text: |
+                  events { worker_connections 1024; }
+                  http {
+                    server {
+                      listen ${{ job.outputs.port }};
+                      root ${{ job.outputs.html-dir }};
+                    }
+                  }
+            - name: Check NGINX status (example test)
+              run: |
+                # NGINX is now running on the runner, you can perform tests against it
+                curl http://localhost:${{ steps.setup-nginx-service.outputs.port }}
